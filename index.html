@@ -32,7 +32,6 @@
     min-height: 100vh;
   }
 
-  /* ── HEADER ── */
   header {
     background: linear-gradient(160deg, #1A1410 0%, #0E0D0B 60%);
     border-bottom: 1px solid var(--gold);
@@ -66,7 +65,6 @@
   header h1 span { color: var(--gold); }
   .subtitle { color: var(--muted); font-size: .9rem; }
 
-  /* ── COUNTDOWN ── */
   #countdown-wrap {
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -120,7 +118,6 @@
     font-weight: 700;
   }
 
-  /* ── REGISTRATION ── */
   #registration {
     max-width: 560px;
     margin: 0 auto 2rem;
@@ -174,7 +171,6 @@
   .checkbox-row p { font-size: .88rem; color: var(--text); }
   .checkbox-row strong { color: var(--gold-lt); }
 
-  /* ── ITEMS GRID ── */
   main {
     max-width: 1100px;
     margin: 0 auto;
@@ -263,7 +259,6 @@
   .bid-btn:hover { background: var(--gold-lt); }
   .bid-btn:disabled { opacity: .4; cursor: not-allowed; }
 
-  /* ── MODAL ── */
   .overlay {
     display: none;
     position: fixed;
@@ -345,7 +340,6 @@
   }
   .close-x:hover { color: #fff; }
 
-  /* ── TOAST ── */
   #toast {
     position: fixed;
     bottom: 1.5rem;
@@ -366,7 +360,6 @@
   #toast.error { background: var(--red); }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-  /* ── LOADING ── */
   #loading-overlay {
     display: none;
     position: fixed;
@@ -397,11 +390,10 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <p class="eyebrow">Benefit Fundraiser · Silent Auction</p>
   <h1>Bid for a <span>Cause</span></h1>
-  <p class="subtitle">Place your bids before the auction closes at 11:00 PM tonight</p>
+  <p class="subtitle">Place your bids before the auction closes at 11:00 PM on June 13</p>
 
   <div id="countdown-wrap">
     <p class="cd-label">Auction Closes In</p>
@@ -416,7 +408,6 @@
   </div>
 </header>
 
-<!-- REGISTRATION -->
 <section id="registration">
   <div class="reg-card">
     <h2>Register to Bid</h2>
@@ -437,13 +428,11 @@
   </div>
 </section>
 
-<!-- AUCTION ITEMS -->
 <main>
   <p class="section-title">Auction Items</p>
   <div class="items-grid" id="items-grid"></div>
 </main>
 
-<!-- BID MODAL -->
 <div class="overlay" id="modal-overlay">
   <div class="modal" role="dialog" aria-modal="true">
     <button class="close-x" id="modal-close" aria-label="Close">✕</button>
@@ -459,28 +448,21 @@
   </div>
 </div>
 
-<!-- LOADING -->
 <div id="loading-overlay">
   <div class="spinner"></div>
   <p>Submitting your bid…</p>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────
-// Replace this URL after deploying your Google Apps Script:
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwv6Zrmzs5FEe8tidJ3xSzxroEhnE7UXrpS6sjyfj7KwqecDOrR03sZv3OT0_NT0kxv/exec";
 
-// Auction end time: today at 11 PM local
 const auctionEnd = (() => {
-  const d = new Date(2025, 5, 13, 23, 0, 0, 0); //
-  
+  const d = new Date(2026, 5, 13, 23, 0, 0, 0);
   return d;
 })();
 
-// ─── ITEMS ────────────────────────────────────────────────
 const items = [
   {
     cat: "Gift & Lifestyle",
@@ -576,7 +558,6 @@ const items = [
   },
 ];
 
-// ─── RENDER ITEMS ─────────────────────────────────────────
 function fmt(n) { return "$" + n.toLocaleString(); }
 
 const grid = document.getElementById("items-grid");
@@ -597,7 +578,6 @@ items.forEach((item, idx) => {
   grid.appendChild(card);
 });
 
-// ─── COUNTDOWN ────────────────────────────────────────────
 function updateCountdown() {
   const now = new Date();
   const diff = auctionEnd - now;
@@ -620,7 +600,6 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-// ─── MODAL ────────────────────────────────────────────────
 let activeIdx = null;
 const overlay = document.getElementById("modal-overlay");
 const modalName = document.getElementById("modal-item-name");
@@ -649,7 +628,6 @@ document.getElementById("modal-close").addEventListener("click", closeModal);
 document.getElementById("modal-cancel").addEventListener("click", closeModal);
 overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
 
-// ─── REGISTRATION VALIDATION ──────────────────────────────
 function validateRegistration() {
   const name  = document.getElementById("bidder-name").value.trim();
   const phone = document.getElementById("bidder-phone").value.trim();
@@ -660,7 +638,6 @@ function validateRegistration() {
   return true;
 }
 
-// ─── SUBMIT BID ───────────────────────────────────────────
 document.getElementById("modal-submit").addEventListener("click", async () => {
   const item = items[activeIdx];
   const amount = parseFloat(bidInput.value);
@@ -695,7 +672,6 @@ document.getElementById("modal-submit").addEventListener("click", async () => {
   }
 });
 
-// ─── TOAST ────────────────────────────────────────────────
 let toastTimer;
 function showToast(msg, isError = false) {
   const t = document.getElementById("toast");
